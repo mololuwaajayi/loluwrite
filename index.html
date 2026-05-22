@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lolu Writes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,700;12..96,800&family=Lora:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --sun:#f7c948;
+  --rust:#d94f2b;
+  --forest:#1e4d2b;
+  --earth:#5c2d0e;
+  --cream:#fdf8f0;
+  --night:#0f0a04;
+  --sage:#6b9c5a;
+  --amber:#e8861a;
+  --terracotta:#c4552a;
+  --warm-mid:#f5ede0;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--night);
+  font-family:'Bricolage Grotesque',sans-serif;
+  overflow-x:hidden;
+}
+
+/* ======= NOISE TEXTURE OVERLAY ======= */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9999;
+}
+
+/* ======= NAV ======= */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 1.5rem;
+  mix-blend-mode:normal;
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:0.05em;
+  color:var(--night);text-decoration:none;
+  background:var(--sun);
+  padding:0.3rem 0.9rem;
+  display:inline-block;
+}
+.nav-right{display:flex;gap:0.5rem;align-items:center}
+.nav-link{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--cream);background:var(--night);
+  padding:0.4rem 0.9rem;border-radius:999px;
+  text-decoration:none;transition:all 0.2s;
+}
+.nav-link:hover,.nav-link.cta{background:var(--rust);color:var(--cream)}
+.nav-link.cta{background:var(--rust)}
+
+/* ======= HERO ======= */
+.hero{
+  min-height:100svh;
+  background:var(--night);
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:6rem 1.5rem 2.5rem;
+  position:relative;overflow:hidden;
+}
+
+/* animated gradient blob */
+.hero-blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:0.25;
+  animation:drift 12s ease-in-out infinite;
+}
+.blob1{width:500px;height:500px;background:var(--amber);top:-100px;right:-100px;animation-delay:0s}
+.blob2{width:400px;height:400px;background:var(--rust);bottom:-80px;left:-80px;animation-delay:-5s}
+.blob3{width:300px;height:300px;background:var(--sage);top:30%;right:20%;animation-delay:-8s}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(30px,-20px) scale(1.05)}
+  66%{transform:translate(-20px,30px) scale(0.95)}
+}
+
+/* sticker elements */
+.sticker{
+  position:absolute;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;
+  animation:spin 12s linear infinite;
+  user-select:none;
+}
+.sticker-1{
+  width:100px;height:100px;
+  background:var(--sun);color:var(--night);
+  font-size:0.55rem;letter-spacing:0.15em;
+  top:5rem;right:1.5rem;
+  text-align:center;padding:1rem;
+  line-height:1.5;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;
+  text-transform:uppercase;
+  animation:wobble 4s ease-in-out infinite;
+}
+.sticker-2{
+  width:70px;height:70px;
+  background:var(--rust);color:var(--cream);
+  font-size:1.8rem;
+  top:12rem;left:1.5rem;
+  animation:wobble 3s ease-in-out infinite reverse;
+}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes wobble{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+
+.hero-eyebrow{
+  font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--sun);margin-bottom:1rem;
+  animation:fadeUp 0.6s ease 0.2s both;
+}
+
+.hero-h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,18vw,11rem);
+  line-height:0.88;
+  letter-spacing:0.01em;
+  color:var(--cream);
+  margin-bottom:1.5rem;
+  animation:fadeUp 0.7s ease 0.35s both;
+}
+.hero-h1 .stroke{
+  -webkit-text-stroke:2px var(--sun);
+  color:transparent;
+}
+.hero-h1 .filled{color:var(--sun)}
+
+.hero-bottom{
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+  animation:fadeUp 0.7s ease 0.55s both;
+}
+@media(min-width:640px){
+  .hero-bottom{flex-direction:row;align-items:flex-end;justify-content:space-between}
+}
+.hero-desc{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.15rem);
+  line-height:1.8;
+  color:rgba(253,248,240,0.65);
+  max-width:420px;
+}
+.hero-desc strong{color:var(--sun);font-style:normal;font-family:'Bricolage Grotesque',sans-serif;font-weight:700}
+
+.hero-actions{display:flex;gap:0.7rem;flex-wrap:wrap}
+.hbtn{
+  font-weight:700;font-size:0.82rem;letter-spacing:0.04em;
+  padding:0.8rem 1.7rem;
+  text-decoration:none;display:inline-block;
+  transition:all 0.2s;border:2px solid transparent;
+}
+.hbtn-y{background:var(--sun);color:var(--night);border-color:var(--sun)}
+.hbtn-y:hover{background:transparent;color:var(--sun);transform:translateY(-2px)}
+.hbtn-o{background:transparent;color:var(--cream);border-color:rgba(255,255,255,0.25)}
+.hbtn-o:hover{border-color:var(--sun);color:var(--sun)}
+
+/* ======= MARQUEE ======= */
+.marquee-wrap{background:var(--rust);padding:0.8rem 0;overflow:hidden;border-top:2px solid var(--earth);border-bottom:2px solid var(--earth)}
+.marquee-inner{display:flex;gap:0;white-space:nowrap;animation:marq 22s linear infinite}
+.marquee-item{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem;letter-spacing:0.08em;
+  color:var(--cream);padding:0 1.5rem;flex-shrink:0;
+}
+.marquee-dot{color:var(--sun)}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ======= SECTIONS ======= */
+.sec{padding:5rem 1.5rem}
+
+.sec-label{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:0.5rem;
+  margin-bottom:1rem;
+}
+.sec-label::before{content:'';width:1.5rem;height:2px}
+
+.sec-h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,10vw,6rem);
+  line-height:0.92;letter-spacing:0.02em;
+  margin-bottom:1.2rem;
+}
+.sec-h2 .ital{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-weight:400;
+  font-size:0.85em;
+  letter-spacing:0;
+}
+
+/* ======= ABOUT ======= */
+.sec-about{
+  background:var(--forest);
+  color:var(--cream);
+  position:relative;overflow:hidden;
+}
+.about-adire{
+  position:absolute;top:0;left:0;right:0;height:8px;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--sun) 0 16.66%,
+    var(--rust) 16.66% 33.33%,
+    var(--sage) 33.33% 50%,
+    var(--amber) 50% 66.66%,
+    var(--cream) 66.66% 83.33%,
+    var(--earth) 83.33% 100%
+  );
+}
+.sec-about .sec-label{color:var(--sun)}
+.sec-about .sec-label::before{background:var(--sun)}
+.sec-about .sec-h2{color:var(--cream)}
+.about-grid{
+  display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:2.5rem;
+}
+@media(min-width:640px){.about-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.about-grid{grid-template-columns:2fr 1fr 1fr}}
+
+.about-main{
+  background:#2a6636;
+  border-radius:20px;padding:2rem;
+  grid-row:span 2;
+}
+@media(max-width:639px){.about-main{grid-row:auto}}
+.about-main .big-quote{
+  font-family:'Lora',serif;
+  font-style:italic;font-size:1.3rem;
+  line-height:1.6;color:var(--warm-mid);
+  margin-bottom:1.5rem;
+}
+.about-main p{font-size:0.9rem;line-height:1.8;color:rgba(253,248,240,0.7);margin-bottom:0.9rem}
+
+.about-stat{
+  border-radius:20px;padding:1.8rem 1.5rem;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.about-stat-1{background:var(--sun)}
+.about-stat-2{background:var(--rust)}
+.about-stat .big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:4rem;line-height:1;
+  color:var(--night);
+}
+.about-stat-2 .big{color:var(--cream)}
+.about-stat .label{font-size:0.78rem;font-weight:700;color:var(--night);opacity:0.7}
+.about-stat-2 .label{color:var(--cream);opacity:0.75}
+
+/* ======= SERVICES ======= */
+.sec-services{background:var(--cream)}
+.sec-services .sec-label{color:var(--rust)}
+.sec-services .sec-label::before{background:var(--rust)}
+.svc-list{display:flex;flex-direction:column;gap:2px;margin-top:2.5rem}
+.svc-row{
+  display:flex;
+  flex-direction:column;
+  background:var(--warm-mid);
+  border-radius:0;
+  padding:1.8rem 1.5rem;
+  gap:1rem;
+  transition:background 0.2s;
+  border-bottom:2px solid rgba(0,0,0,0.06);
+  position:relative;
+  overflow:hidden;
+  cursor:default;
+}
+.svc-row:first-child{border-radius:16px 16px 0 0}
+.svc-row:last-child{border-radius:0 0 16px 16px;border-bottom:none}
+.svc-row:hover{background:#fdf0dc}
+@media(min-width:640px){
+  .svc-row{flex-direction:row;align-items:center;gap:2rem}
+}
+.svc-num-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;line-height:1;
+  color:var(--sun);flex-shrink:0;
+  width:3.5rem;
+}
+.svc-content{flex:1}
+.svc-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;letter-spacing:0.03em;
+  color:var(--night);margin-bottom:0.4rem;
+}
+.svc-desc{font-size:0.88rem;line-height:1.75;color:#5a3a1a}
+.svc-tags-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.7rem}
+.s-tag{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--night);color:var(--cream);
+  padding:0.25rem 0.7rem;border-radius:999px;
+}
+.svc-icon{font-size:2.5rem;flex-shrink:0}
+
+/* ======= WORK ======= */
+.sec-work{background:var(--night)}
+.sec-work .sec-label{color:var(--sun)}
+.sec-work .sec-label::before{background:var(--sun)}
+.sec-work .sec-h2{color:var(--cream)}
+
+.filter-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin:2rem 0 1.5rem}
+.ftab{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.4rem 1rem;
+  background:rgba(255,255,255,0.07);
+  color:rgba(255,255,255,0.45);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:999px;cursor:pointer;transition:all 0.2s;
+}
+.ftab.on,.ftab:hover{background:var(--sun);color:var(--night);border-color:var(--sun)}
+
+.work-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0.8rem;
+}
+@media(min-width:640px){.work-grid{grid-template-columns:1fr 1fr}}
+
+.wcard{
+  background:#1c1105;
+  border-radius:16px;padding:1.8rem;
+  text-decoration:none;color:var(--cream);
+  display:flex;flex-direction:column;gap:0.6rem;
+  border:1.5px solid rgba(255,255,255,0.05);
+  transition:all 0.25s;position:relative;overflow:hidden;
+}
+.wcard.hidden{display:none}
+.wcard:hover{border-color:var(--sun);transform:translateY(-3px)}
+.wcard-feat{
+  grid-column:1/-1;
+  background:linear-gradient(135deg,var(--rust) 0%,var(--earth) 100%);
+  border-color:transparent;
+}
+.wcard-feat:hover{border-color:var(--sun)}
+.wcard-type{
+  font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--sun);
+}
+.wcard-feat .wcard-type{color:rgba(255,255,255,0.65)}
+.wcard-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.2rem,3vw,1.6rem);
+  letter-spacing:0.02em;line-height:1.1;
+}
+.wcard-feat .wcard-title{font-size:clamp(1.6rem,4vw,2.4rem)}
+.wcard-desc{font-size:0.85rem;line-height:1.7;color:rgba(253,248,240,0.5)}
+.wcard-arrow{
+  position:absolute;top:1.3rem;right:1.3rem;
+  font-size:1.1rem;color:rgba(255,255,255,0.2);
+  transition:all 0.2s;
+}
+.wcard:hover .wcard-arrow{color:var(--sun);transform:translate(3px,-3px)}
+
+/* ======= GHOSTWRITING ======= */
+.sec-ghost{background:var(--sun)}
+.sec-ghost .sec-label{color:var(--earth)}
+.sec-ghost .sec-label::before{background:var(--earth)}
+.sec-ghost .sec-h2{color:var(--night)}
+.ghost-sub{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:1.05rem;line-height:1.8;
+  color:var(--earth);max-width:520px;margin-bottom:2.5rem;
+}
+
+.ghost-note{
+  background:var(--night);
+  border-radius:12px;
+  padding:1rem 1.3rem;
+  font-size:0.85rem;line-height:1.7;
+  color:rgba(253,248,240,0.7);
+  margin-bottom:2rem;
+}
+.ghost-note strong{color:var(--sun)}
+
+.gcards{display:flex;flex-direction:column;gap:1rem}
+.gcard{border-radius:20px;overflow:hidden;border:2.5px solid var(--night)}
+.gcard-top{
+  background:var(--night);
+  padding:1rem 1.5rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;
+}
+.gcard-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--sun)}
+.gcard-chip{font-size:0.58rem;font-weight:700;background:var(--rust);color:var(--cream);padding:0.2rem 0.7rem;border-radius:999px}
+.gcard-body{background:rgba(255,255,255,0.4);backdrop-filter:blur(2px);padding:1.8rem 1.5rem}
+.gcard-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.5rem;letter-spacing:0.03em;
+  color:var(--night);margin-bottom:0.2rem;
+}
+.gcard-voice{font-size:0.72rem;color:var(--earth);font-style:italic;margin-bottom:1.2rem}
+.gcard-text{font-size:0.9rem;line-height:1.85;color:#3a1e00}
+.gcard-text p{margin-bottom:0.9rem}
+.gcard-text p:last-child{margin-bottom:0}
+.gcard-foot{
+  background:rgba(0,0,0,0.08);
+  padding:0.8rem 1.5rem;
+  font-size:0.7rem;color:var(--earth);font-style:italic;
+  border-top:1px dashed rgba(0,0,0,0.15);
+}
+
+/* ======= AFRICAN WRITING ======= */
+.sec-africa{
+  background:var(--earth);
+  position:relative;overflow:hidden;
+}
+.africa-top-bar{
+  position:absolute;top:0;left:0;right:0;height:7px;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--sun) 0 14%,
+    var(--rust) 14% 28%,
+    var(--sage) 28% 42%,
+    var(--amber) 42% 56%,
+    var(--forest) 56% 70%,
+    var(--cream) 70% 84%,
+    var(--night) 84% 100%
+  );
+}
+.sec-africa .sec-label{color:var(--sun)}
+.sec-africa .sec-label::before{background:var(--sun)}
+.sec-africa .sec-h2{color:var(--cream)}
+.africa-intro{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:1rem;line-height:1.85;
+  color:rgba(253,248,240,0.65);
+  max-width:520px;margin-bottom:2.5rem;
+}
+.africa-cards{
+  display:grid;grid-template-columns:1fr;gap:0.8rem;
+}
+@media(min-width:640px){.africa-cards{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.africa-cards{grid-template-columns:1fr 1fr 1fr}}
+
+.afcard{
+  border-radius:16px;padding:1.8rem;
+  text-decoration:none;color:var(--cream);display:block;
+  border:1.5px solid rgba(255,255,255,0.12);
+  transition:transform 0.25s,border-color 0.25s;
+  position:relative;
+}
+.afcard:hover{transform:translateY(-4px);border-color:var(--sun)}
+.afc1{background:#7a2200}
+.afc2{background:#1a3d10}
+.afc3{background:#3d1800}
+.afc4{background:#0d2e0a}
+.afc5{background:#2a1500}
+.afc6{background:#1e3a0d}
+.afcard-type{font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--sun);margin-bottom:0.7rem}
+.afcard-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.15rem;letter-spacing:0.02em;line-height:1.2;
+  margin-bottom:0.6rem;
+}
+.afcard-desc{font-size:0.82rem;line-height:1.7;color:rgba(253,248,240,0.55)}
+.afcard-link{
+  display:inline-block;margin-top:1rem;
+  font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--sun);border-bottom:1px solid var(--sun);
+  text-decoration:none;padding-bottom:2px;
+}
+
+/* ======= EXPERIENCE ======= */
+.sec-exp{background:var(--cream)}
+.sec-exp .sec-label{color:var(--forest)}
+.sec-exp .sec-label::before{background:var(--forest)}
+.exp-wrap{
+  display:grid;grid-template-columns:1fr;gap:2rem;margin-top:2.5rem;
+}
+@media(min-width:900px){.exp-wrap{grid-template-columns:1fr 380px}}
+.tline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:1.8rem}
+.tline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--sun),var(--rust),var(--sage),var(--forest))}
+.titem{padding:0 0 2.5rem 1.5rem;position:relative}
+.titem::before{
+  content:'';position:absolute;left:-0.55rem;top:0.35rem;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--sun);box-shadow:0 0 0 3px var(--cream),0 0 0 5px var(--sun);
+}
+.tperiod{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--rust);margin-bottom:0.3rem}
+.trole{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.02em;color:var(--night);margin-bottom:0.15rem}
+.torg{font-size:0.78rem;font-weight:600;color:var(--amber);margin-bottom:0.7rem;font-style:italic}
+.tdesc{font-size:0.87rem;line-height:1.75;color:#5a3a1a}
+
+.exp-panel{
+  background:var(--night);border-radius:20px;
+  padding:2rem;
+}
+@media(min-width:900px){.exp-panel{position:sticky;top:80px}}
+.exp-panel .quote{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:1.2rem;line-height:1.65;
+  color:rgba(253,248,240,0.8);margin-bottom:1.5rem;
+}
+.exp-panel .quote strong{color:var(--sun);font-style:normal;font-family:'Bricolage Grotesque',sans-serif}
+.exp-panel p{font-size:0.87rem;line-height:1.8;color:rgba(253,248,240,0.5);margin-bottom:0.9rem}
+.ntags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem}
+.ntag{
+  font-size:0.62rem;font-weight:700;letter-spacing:0.06em;
+  padding:0.3rem 0.8rem;border-radius:999px;
+  border:1.5px solid rgba(247,201,72,0.3);color:var(--sun);
+  transition:all 0.2s;cursor:default;
+}
+.ntag:hover{background:var(--sun);color:var(--night)}
+
+/* ======= CONTACT ======= */
+.sec-contact{
+  background:var(--rust);
+  padding:5rem 1.5rem;
+  position:relative;overflow:hidden;text-align:center;
+}
+.contact-bg-text{
+  position:absolute;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(6rem,25vw,16rem);
+  color:rgba(255,255,255,0.06);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;pointer-events:none;letter-spacing:0.05em;
+  line-height:1;
+}
+.sec-contact .sec-h2{
+  color:var(--cream);
+  font-size:clamp(3rem,12vw,7rem);
+  position:relative;z-index:1;
+  margin-bottom:1rem;
+}
+.sec-contact .sec-h2 .ital{color:var(--sun)}
+.contact-p{
+  font-family:'Lora',serif;font-style:italic;
+  font-size:1rem;line-height:1.8;
+  color:rgba(253,248,240,0.75);
+  max-width:420px;margin:0 auto 2.5rem;
+  position:relative;z-index:1;
+}
+.clinks{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:0.8rem;position:relative;z-index:1;
+}
+.clink{
+  display:inline-flex;flex-direction:column;align-items:center;gap:0.25rem;
+  background:var(--night);color:var(--cream);
+  padding:1.1rem 1.8rem;border-radius:14px;
+  text-decoration:none;transition:transform 0.2s;min-width:150px;
+}
+.clink:hover{transform:translateY(-4px) rotate(-2deg)}
+.clink-lbl{font-size:0.58rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--sun)}
+.clink-val{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:0.05em}
+
+footer{
+  background:var(--night);
+  color:rgba(253,248,240,0.25);
+  text-align:center;padding:1.5rem;
+  font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* ======= ANIMATIONS ======= */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.r{opacity:0;transform:translateY(22px);transition:opacity 0.6s ease,transform 0.6s ease}
+.r.on{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">LOLU.</a>
+  <div class="nav-right">
+    <a href="#work" class="nav-link">Work</a>
+    <a href="#africa" class="nav-link">African Writing</a>
+    <a href="#contact" class="nav-link cta">Hire Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob blob1"></div>
+  <div class="hero-blob blob2"></div>
+  <div class="hero-blob blob3"></div>
+
+  <div class="sticker-1">Lagos<br>Born<br>Word<br>Builder</div>
+  <div class="sticker-2">✍🏾</div>
+
+  <p class="hero-eyebrow">Mololuwa Ajayi, Writer & Ghostwriter</p>
+
+  <h1 class="hero-h1">
+    <span class="stroke">SAY</span><br>
+    <span class="filled">SOMETHING</span><br>
+    <span class="stroke">REAL.</span>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      I write the things people <strong>feel</strong> but struggle to say. Tech stories. African truths. Founder voices. Words that land and <strong>stay.</strong>
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="hbtn hbtn-y">See the work</a>
+      <a href="#contact" class="hbtn hbtn-o">Hire me</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-inner">
+    <span class="marquee-item">Tech Writing <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Ghostwriting <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">African Storytelling <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Newsletter Writing <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Climate Essays <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Founder Voice <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Cultural Narratives <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Personal Essays <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Social Impact <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Tech Writing <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Ghostwriting <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">African Storytelling <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Newsletter Writing <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Climate Essays <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Founder Voice <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Cultural Narratives <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Personal Essays <span class="marquee-dot">★</span></span>
+    <span class="marquee-item">Social Impact <span class="marquee-dot">★</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="sec sec-about" id="about">
+  <div class="about-adire"></div>
+  <span class="sec-label r" style="color:var(--sun)"><span style="background:var(--sun);width:1.5rem;height:2px;display:inline-block"></span> Who is Lolu?</span>
+  <h2 class="sec-h2 r">I don't just write.<br><span class="ital">I give words a life.</span></h2>
+  <div class="about-grid">
+    <div class="about-main r">
+      <div class="big-quote">"Writing, for me, is the space between what happened and what it means. I live in that space."</div>
+      <p>I am Mololuwa Ajayi, a content writer and ghostwriter from Lagos. My voice is shaped by Yoruba storytelling, long bus rides, and a refusal to write anything that feels lifeless.</p>
+      <p>I cover tech, African culture, climate, lifestyle, and the kind of human stories that make readers feel less alone in the world. I also disappear into other people's voices when they need a ghostwriter who actually listens.</p>
+      <p>Remote. Async. Deadline-friendly. 9 published pieces and counting.</p>
+    </div>
+    <div class="about-stat about-stat-1 r">
+      <span class="big">9+</span>
+      <span class="label">Published Pieces</span>
+    </div>
+    <div class="about-stat about-stat-2 r">
+      <span class="big" style="color:var(--sun)">2+</span>
+      <span class="label">Years Writing Professionally</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec sec-services" id="services">
+  <span class="sec-label r">What I offer</span>
+  <h2 class="sec-h2 r">The work<br><span class="ital">I do best.</span></h2>
+  <div class="svc-list">
+    <div class="svc-row r">
+      <div class="svc-num-big">01</div>
+      <div class="svc-icon">✍🏾</div>
+      <div class="svc-content">
+        <div class="svc-name">Ghostwriting</div>
+        <p class="svc-desc">I write in your voice so well, even you forget I wrote it. Newsletters, founder essays, LinkedIn content, thought leadership. You bring the ideas. I bring the words. We both keep the secret.</p>
+        <div class="svc-tags-row"><span class="s-tag">Newsletters</span><span class="s-tag">LinkedIn</span><span class="s-tag">Founder Essays</span></div>
+      </div>
+    </div>
+    <div class="svc-row r">
+      <div class="svc-num-big">02</div>
+      <div class="svc-icon">📰</div>
+      <div class="svc-content">
+        <div class="svc-name">Content Writing</div>
+        <p class="svc-desc">Long-form articles, tech explainers, editorial features, blog posts. Writing that earns attention rather than begging for it. Informed, honest, and built for real humans not just search engines.</p>
+        <div class="svc-tags-row"><span class="s-tag">Tech & Web3</span><span class="s-tag">Long-Form</span><span class="s-tag">Thought Leadership</span></div>
+      </div>
+    </div>
+    <div class="svc-row r">
+      <div class="svc-num-big">03</div>
+      <div class="svc-icon">🌍</div>
+      <div class="svc-content">
+        <div class="svc-name">African Storytelling</div>
+        <p class="svc-desc">Content rooted in the African experience, written by someone actually living it. Climate, culture, memoir, and digital economy narratives with the kind of intimacy that outsiders simply cannot fake.</p>
+        <div class="svc-tags-row"><span class="s-tag">Culture</span><span class="s-tag">Climate</span><span class="s-tag">Memoir</span><span class="s-tag">Digital Africa</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="sec sec-work" id="work">
+  <span class="sec-label r">Selected work</span>
+  <h2 class="sec-h2 r">9 pieces.<br><span class="ital">All of them matter.</span></h2>
+
+  <div class="filter-tabs r">
+    <button class="ftab on" data-f="all">All</button>
+    <button class="ftab" data-f="tech">Tech</button>
+    <button class="ftab" data-f="ux">UX</button>
+    <button class="ftab" data-f="newsletter">Newsletter</button>
+    <button class="ftab" data-f="impact">Impact</button>
+    <button class="ftab" data-f="personal">Personal</button>
+  </div>
+
+  <div class="work-grid">
+    <a href="#" class="wcard wcard-feat r" data-c="tech">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Tech Essay — Featured</div>
+      <div class="wcard-title">Africa's Next Digital Leap Might Be Built on Web3</div>
+      <div class="wcard-desc">For decades, Africa has leapfrogged entire systems. Mobile money proved it. Now Web3 could unlock a generation of creators and developers on Africa's own terms.</div>
+    </a>
+    <a href="https://open.substack.com/pub/geekhub/p/the-ai-fridge-just-spoke" target="_blank" class="wcard r" data-c="newsletter">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Newsletter — GeekHub Substack</div>
+      <div class="wcard-title">The Fridge Spoke. Now What?</div>
+      <div class="wcard-desc">A witty breakdown of the week's wildest tech shifts. From smart appliances to wildfire startups.</div>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/when-the-mangoes-were-enough-532fdab70869" target="_blank" class="wcard r" data-c="impact personal">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Personal Memoir — Medium</div>
+      <div class="wcard-title">When the Mangoes Were Enough</div>
+      <div class="wcard-desc">Growing up in scarcity in Nigeria. Choosing to see your story as something others might find courage in.</div>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/rooted-in-tomorrow-984d4c5961c8" target="_blank" class="wcard r" data-c="impact">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Climate Essay — Medium</div>
+      <div class="wcard-title">Rooted in Tomorrow: A Climate Restoration Monologue</div>
+      <div class="wcard-desc">A poetic call to restore the earth, written with African urgency and deep personal feeling.</div>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/why-websites-use-cookies-and-when-you-should-say-yes-7cc413cd9c86" target="_blank" class="wcard r" data-c="ux">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">UX Writing — Medium</div>
+      <div class="wcard-title">Why Websites Use Cookies, And When You Should Say Yes</div>
+      <div class="wcard-desc">Plain language for everyday users. Jargon-free and actually useful.</div>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/how-to-set-up-two-factor-authentication-2fa-on-your-whatsapp-account-aa1c5cca29af" target="_blank" class="wcard r" data-c="ux">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Tutorial — Medium</div>
+      <div class="wcard-title">How to Lock Down Your WhatsApp in 5 Minutes</div>
+      <div class="wcard-desc">Step-by-step two-factor authentication guide. So simple your auntie could follow it.</div>
+    </a>
+    <a href="#" class="wcard r" data-c="personal">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Personal Essay</div>
+      <div class="wcard-title">Journal of a Tired Student</div>
+      <div class="wcard-desc">Exhaustion, ambition, and the quiet dignity of continuing anyway. Raw and honest.</div>
+    </a>
+    <a href="#" class="wcard r" data-c="personal">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Creative Essay</div>
+      <div class="wcard-title">What If Light Grew Like a Plant?</div>
+      <div class="wcard-desc">Science meets imagination. Writing that refuses to stay in one lane.</div>
+    </a>
+    <a href="#" class="wcard r" data-c="tech">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Tech Essay</div>
+      <div class="wcard-title">Startups Change the World Because They're Allowed to Fail</div>
+    </a>
+    <a href="#" class="wcard r" data-c="tech">
+      <span class="wcard-arrow">↗</span>
+      <div class="wcard-type">Tech Essay</div>
+      <div class="wcard-title">Technology Was Never About Machines. It Was Always About People.</div>
+    </a>
+  </div>
+</section>
+
+<!-- GHOSTWRITING -->
+<section class="sec sec-ghost" id="ghost">
+  <span class="sec-label r">Ghostwriting</span>
+  <h2 class="sec-h2 r">My best work<br><span class="ital">has no byline.</span></h2>
+  <p class="ghost-sub r">I write in other people's voices, for founders, creators, and professionals who have something real to say but need the right words. Here is proof.</p>
+
+  <div class="ghost-note r">
+    These are <strong>demonstration samples</strong> showing how I adapt to a client's voice, tone, and industry. I write newsletters, LinkedIn posts, essays, and long-form content that sounds like <strong>you at your best.</strong>
+  </div>
+
+  <div class="gcards">
+    <div class="gcard r">
+      <div class="gcard-top">
+        <span class="gcard-lbl">Founder Newsletter Edition</span>
+        <span class="gcard-chip">Sample</span>
+      </div>
+      <div class="gcard-body">
+        <div class="gcard-title">Nobody Told Me Building a Startup Would Feel Like This</div>
+        <div class="gcard-voice">Written in the voice of an African tech founder</div>
+        <div class="gcard-text">
+          <p>Six months ago, I thought the hard part was the idea. I had a deck, a vision, and the kind of energy that makes people nod along in meetings. What I did not have was a single user.</p>
+          <p>Here is what they do not put in the startup playbooks: the silence after launch is louder than any noise you have ever heard. Your product is live. The notification sound you imagined playing never comes.</p>
+          <p>But this week something changed. Not the metrics, those are still humble. What changed was me. I stopped waiting for the product to prove itself and started talking to the people I built it for. Twelve calls. Twelve different versions of the same honest feedback. And suddenly I understood what we were actually building.</p>
+          <p>Your first users will not come to you. You go to them. Every time.</p>
+        </div>
+      </div>
+      <div class="gcard-foot">Demonstration sample showing voice adaptation for a founder client. Available for retainer ghostwriting.</div>
+    </div>
+
+    <div class="gcard r">
+      <div class="gcard-top">
+        <span class="gcard-lbl">LinkedIn Thought Leadership Post</span>
+        <span class="gcard-chip">Sample</span>
+      </div>
+      <div class="gcard-body">
+        <div class="gcard-title">The best career advice I got was from someone who had already failed</div>
+        <div class="gcard-voice">Written in the voice of a senior professional</div>
+        <div class="gcard-text">
+          <p>Three years into my career, I met a man who had built three companies. Two of them had failed spectacularly. He was the most confident person in the room.</p>
+          <p>I asked him how. He said: "I stopped treating failure like a verdict. It is just data."</p>
+          <p>That reframe changed how I approach every project. I no longer ask "What if this doesn't work?" I ask "What will I learn when this doesn't go exactly as planned?"</p>
+          <p>There is a version of ambition that is fragile. And then there is the kind built on genuine curiosity. The second kind is what builds lasting careers. And it is a choice you make before results arrive, not after.</p>
+        </div>
+      </div>
+      <div class="gcard-foot">Demonstration sample for LinkedIn ghostwriting. I adapt fully to your voice, tone, and industry.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AFRICAN WRITING -->
+<section class="sec sec-africa" id="africa">
+  <div class="africa-top-bar"></div>
+  <span class="sec-label r">African writing</span>
+  <h2 class="sec-h2 r">From inside<br><span class="ital">the story.</span></h2>
+  <p class="africa-intro r">I write about Africa as someone who grew up here and navigates Lagos every day. Not observation. Not tourism. Just truth.</p>
+  <div class="africa-cards">
+    <a href="#" class="afcard afc1 r">
+      <div class="afcard-type">Tech Essay — Featured</div>
+      <div class="afcard-title">Africa's Next Digital Leap Might Be Built on Web3</div>
+      <p class="afcard-desc">Why Web3 won't just arrive in Africa. It may thrive here in ways the rest of the world didn't anticipate.</p>
+      <span class="afcard-link">Read Essay ↗</span>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/rooted-in-tomorrow-984d4c5961c8" target="_blank" class="afcard afc2 r">
+      <div class="afcard-type">Climate Essay</div>
+      <div class="afcard-title">Rooted in Tomorrow: A Climate Restoration Monologue</div>
+      <p class="afcard-desc">A poetic call to restore the earth, written with the urgency of someone who has watched their own environment change.</p>
+      <span class="afcard-link">Read on Medium ↗</span>
+    </a>
+    <a href="https://medium.com/@mololuwaajayi7/when-the-mangoes-were-enough-532fdab70869" target="_blank" class="afcard afc3 r">
+      <div class="afcard-type">Personal Memoir</div>
+      <div class="afcard-title">When the Mangoes Were Enough</div>
+      <p class="afcard-desc">Growing up in scarcity in Lagos. An honest memoir that makes other people feel less alone in their own stories.</p>
+      <span class="afcard-link">Read on Medium ↗</span>
+    </a>
+    <a href="#" class="afcard afc4 r">
+      <div class="afcard-type">Tech Essay</div>
+      <div class="afcard-title">Technology Was Never About Machines. It Was Always About People.</div>
+      <p class="afcard-desc">Told through the lens of a student in Lagos who can now learn from a professor in Boston. A reflection on connection.</p>
+      <span class="afcard-link">Read Essay ↗</span>
+    </a>
+    <a href="#" class="afcard afc5 r">
+      <div class="afcard-type">Personal Essay</div>
+      <div class="afcard-title">Journal of a Tired Student</div>
+      <p class="afcard-desc">Long commutes, quiet ambition, and the decision to keep going when everything says stop.</p>
+      <span class="afcard-link">Read Essay ↗</span>
+    </a>
+    <a href="#" class="afcard afc6 r">
+      <div class="afcard-type">Creative Essay</div>
+      <div class="afcard-title">What If Light Grew Like a Plant?</div>
+      <p class="afcard-desc">A Yoruba-inflected curiosity about the natural world. Creative non-fiction that refuses to stay in one lane.</p>
+      <span class="afcard-link">Read Essay ↗</span>
+    </a>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="sec sec-exp" id="exp">
+  <span class="sec-label r">Experience</span>
+  <h2 class="sec-h2 r">The work<br><span class="ital">behind the work.</span></h2>
+  <div class="exp-wrap">
+    <div class="tline">
+      <div class="titem r">
+        <div class="tperiod">2024 to Present</div>
+        <div class="trole">Freelance Writer & Ghostwriter</div>
+        <div class="torg">Independent, Remote</div>
+        <p class="tdesc">Writing newsletters, LinkedIn content, founder communications, and editorial features for clients across tech, lifestyle, and African media.</p>
+      </div>
+      <div class="titem r">
+        <div class="tperiod">2023 to 2024</div>
+        <div class="trole">Content Writer</div>
+        <div class="torg">GeekHub, Substack Newsletter</div>
+        <p class="tdesc">Helped grow a Substack newsletter from scratch. Connecting tech culture with everyday Nigerian experience and building a loyal reader base.</p>
+      </div>
+      <div class="titem r">
+        <div class="tperiod">2023 to 2024</div>
+        <div class="trole">Editorial Contributor</div>
+        <div class="torg">Echo Magazine</div>
+        <p class="tdesc">Features and editorial content that were culturally grounded, emotionally honest, and rigorously structured.</p>
+      </div>
+      <div class="titem r">
+        <div class="tperiod">Prior</div>
+        <div class="trole">Communications Manager</div>
+        <div class="torg">Media Organization, Lagos</div>
+        <p class="tdesc">Led a large media team overseeing content strategy, editorial planning, and communications output across platforms.</p>
+      </div>
+      <div class="titem r">
+        <div class="tperiod">Ongoing</div>
+        <div class="trole">400-Level Student, Plant Biology</div>
+        <div class="torg">University of Ilorin</div>
+        <p class="tdesc">Final-year undergraduate building research and scientific writing skills alongside a full professional writing career.</p>
+      </div>
+    </div>
+    <div class="exp-panel r">
+      <div class="quote">"Writing is how I make sense of <strong>everything.</strong> Lagos. Light. The distance between where I am and where I am going."</div>
+      <p>Content writer and ghostwriter based in Lagos. Writing at the intersection of technology, culture, and human experience, with a voice shaped by Yoruba storytelling.</p>
+      <p>Available for remote ghostwriting retainers, content partnerships, and editorial projects. Async-friendly. Africa-rooted, globally-minded.</p>
+      <div class="ntags">
+        <span class="ntag">Tech & Web3</span><span class="ntag">African Media</span>
+        <span class="ntag">Sustainability</span><span class="ntag">Lifestyle</span>
+        <span class="ntag">EdTech</span><span class="ntag">Startups</span>
+        <span class="ntag">Social Impact</span><span class="ntag">Climate</span>
+        <span class="ntag">Memoir</span><span class="ntag">Ghostwriting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec-contact" id="contact">
+  <div class="contact-bg-text">WRITE.<br>WITH ME.</div>
+  <h2 class="sec-h2 r">Let's build<br><span class="ital">something real.</span></h2>
+  <p class="contact-p r">Remote-first. Async-friendly. If you need a writer who understands both tech and soul, I want to hear from you.</p>
+  <div class="clinks r">
+    <a href="mailto:mololuwajayi7@gmail.com" class="clink">
+      <span class="clink-lbl">Email</span>
+      <span class="clink-val">mololuwajayi7@gmail.com</span>
+    </a>
+    <a href="https://www.linkedin.com/in/ajayi-mololuwa" target="_blank" class="clink">
+      <span class="clink-lbl">LinkedIn</span>
+      <span class="clink-val">Ajayi Mololuwa</span>
+    </a>
+    <a href="https://wa.me/2349165073389" target="_blank" class="clink">
+      <span class="clink-lbl">WhatsApp</span>
+      <span class="clink-val">+234 916 507 3389</span>
+    </a>
+  </div>
+</section>
+
+<footer>© 2026 Mololuwa Ajayi, Lagos, Nigeria. Writer. Ghostwriter. Storyteller.</footer>
+
+<script>
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('on'),i*90);obs.unobserve(e.target)}
+  });
+},{threshold:0.07});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const f=btn.dataset.f;
+    document.querySelectorAll('.wcard[data-c]').forEach(c=>{
+      c.classList.toggle('hidden',f!=='all'&&!c.dataset.c.includes(f));
+    });
+  });
+});
+</script>
+</body>
+</html>
